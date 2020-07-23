@@ -4,10 +4,9 @@ import controls
 WIDTH = 640
 HEIGHT = 480
 
-restraintLeft = (WIDTH // 3) 
-restraintRight = restraintLeft * 2
+constraintLeft = (WIDTH // 3) 
+constraintRight = constraintLeft * 2
 
-# Load Cascades
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
 cap = cv2.VideoCapture(0)
@@ -18,10 +17,8 @@ cap.set(4, HEIGHT)
 while cap.isOpened():
     ret, frame = cap.read()
 
-    #############
-    frame = cv2.line(frame, (restraintLeft, 0), (restraintLeft, 480), (0,0,0), 1)
-    frame = cv2.line(frame, (restraintRight, 0), (restraintRight, 480), (0,0,0), 1)
-    #############
+    frame = cv2.line(frame, (constraintLeft, 0), (constraintLeft, 480), (255,255,255), 1)
+    frame = cv2.line(frame, (constraintRight, 0), (constraintRight, 480), (255,255,255), 1)
 
     frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -32,6 +29,7 @@ while cap.isOpened():
         x2, y2 = x+w, y+h
         faceArea = w * h
 
+        # Draw green (signal for irrelevant faces) rectangles around all faces in frame as default
         frame = cv2.rectangle(frame, (x,y), (x2,y2), (0,255,0), 1)
         
         # Attempt to sort all faces in frame by closest one (biggest one)
@@ -43,16 +41,19 @@ while cap.isOpened():
 
     # If faces do exist
     if faces != ():
-        frame = cv2.rectangle(frame, faceClosest["xy"], faceClosest["xy2"], (0,0,255), 1)
+        # Draw red (signal for priority face) rectangle for priority target face
+        frame = cv2.rectangle(frame, faceClosest["xy"], faceClosest["xy2"], (0,0,255), 1) 
 
         centerX = faceClosest["xy"][0] + (faceClosest["wh"][0]//2)
         centerY = faceClosest["xy"][1] + (faceClosest["wh"][1]//2)
 
-        frame = cv2.line(frame, (centerX, centerY), (centerX, centerY), (0,0,255), 5)
+        # Draw center of target face
+        frame = cv2.line(frame, (centerX, centerY), (centerX, centerY), (0,0,255), 2)
 
-        if centerX < restraintLeft:
+        # Detect if face is within constraints 
+        if centerX < constraintLeft:
             controls.left()
-        elif centerX > restraintRight:
+        elif centerX > constraintRight:
             controls.right()
         else:
             controls.fire()
