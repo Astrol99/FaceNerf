@@ -1,5 +1,5 @@
 import cv2
-import controls
+import interface
 
 WIDTH = 640
 HEIGHT = 480
@@ -52,11 +52,11 @@ while cap.isOpened():
 
         # Detect if face is within constraints 
         if centerX < constraintLeft:
-            controls.left()
+            interface.left()
         elif centerX > constraintRight:
-            controls.right()
+            interface.right()
         else:
-            controls.fire()
+            interface.fire()
 
     cv2.imshow('Video Capture', frame)
 
