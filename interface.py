@@ -3,21 +3,28 @@ import time
 
 arduinoData = serial.Serial("/dev/ttyACM0",9600)
 
-# Blink Example
+# Signal Table
 """
-while True:
-    arduinoData.write(b'1')
-    time.sleep(1)
-    arduinoData.write(b'0')
-    time.sleep(1)
+L  | LEFT
+F  | FIRE
+R  | RIGHT
+S  | STOP (Sends signal to stop repeating signal sent before)
 """
 
 def left():
     print("LEFT")
+    arduinoData.write(b'L')
 
-def right():
-    print("RIGHT")
+    arduinoData.write(b'S')
 
 def fire():
     print("FIRING")
+    arduinoData.write(b'F')
 
+    arduinoData.write(b'S')
+
+def right():
+    print("RIGHT")
+    arduinoData.write(b'R')
+
+    arduinoData.write(b'S')

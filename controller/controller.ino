@@ -5,20 +5,21 @@ void setup()
 {
     pinMode(pin, OUTPUT);
     Serial.begin(9600);
+    Serial.println("Serial connection Ready...");
 }
 
 void loop()
 {
-    if (Serial.available() > 0)
+    if (Serial.available())
     {
         serialData = Serial.read();
-        Serial.println(serialData);
+        Serial.print(serialData);
 
-        if (serialData == '1')
+        if (serialData == 'L')
         {
             digitalWrite(pin, HIGH);
         }
-        else if (serialData == '0')
+        else if (serialData == 'R')
         {
             digitalWrite(pin, LOW);
         }
