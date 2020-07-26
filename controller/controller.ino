@@ -10,7 +10,7 @@ int xpos = 20;
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(500000);
     Serial.println("Serial Connection Ready...");
     
     servoX.attach(9);
@@ -29,6 +29,10 @@ void loop()
         if (serialData == 'L')  // Turn X Servo Left
         {
           ++xpos;
+
+          // Make sure xpos is in range
+          if (xpos > 180)
+              xpos = 180;
           
           servoX.write(xpos);
           delay(15);
@@ -36,6 +40,9 @@ void loop()
         else if (serialData == 'R') // Turn X Servo Right
         {
           --xpos;
+
+          if (xpos < 20)
+              xpos = 20;
 
           servoX.write(xpos);
           delay(15);

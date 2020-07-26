@@ -4,6 +4,8 @@ import interface
 WIDTH = 640
 HEIGHT = 480
 
+FIRED = False   # Only one nerf bullet lol
+
 constraintLeft = (WIDTH // 3) 
 constraintRight = constraintLeft * 2
 
@@ -50,14 +52,17 @@ while cap.isOpened():
         # Draw center of target face
         frame = cv2.line(frame, (centerX, centerY), (centerX, centerY), (0,0,255), 2)
 
+        # TODO: Fix Serial Lag after couple seconds of use
         # Detect if face is within constraints 
         if centerX < constraintLeft:
             interface.left()
         elif centerX > constraintRight:
             interface.right()
         else:
-            interface.fire()
-
+            if FIRED != True:
+                interface.fire()
+                FIRED = True
+        
     cv2.imshow('Video Capture', frame)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):

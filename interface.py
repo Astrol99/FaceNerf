@@ -1,7 +1,7 @@
 import serial
-import time
 
-arduinoData = serial.Serial("/dev/ttyACM0",9600)
+arduinoData = serial.Serial("/dev/ttyACM0",9600,timeout=0)
+print(f"Connected to {arduinoData.name}...")
 
 # Signal Table
 """
@@ -22,3 +22,4 @@ def fire():
 def right():
     print("RIGHT")
     arduinoData.write(b'R')
+
