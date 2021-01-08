@@ -9,18 +9,18 @@ cap.set(cv2.CAP_PROP_FPS, 60)
 HEIGHT = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 WIDTH = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 
-constraintLeft = WIDTH // 3
-constraintRight = constraintLeft * 2
+constraintLeft = int(WIDTH * 0.4)
+constraintRight = int(WIDTH * 0.6)
 
 while cap.isOpened():
     ret, frame = cap.read()
 
+    faces = faceCascade.detectMultiScale(frame, 1.3, 5)
+
     frame = cv2.line(frame, (constraintLeft, 0), (constraintLeft, HEIGHT), (255,255,255), 1)
     frame = cv2.line(frame, (constraintRight, 0), (constraintRight, HEIGHT), (255,255,255), 1)
 
-    faces = faceCascade.detectMultiScale(frame, 1.3, 5)
     faceClosest = { "area": 0 }
-
     for (x, y, w, h) in faces:
         x2, y2 = x+w, y+h
         faceArea = w * h
