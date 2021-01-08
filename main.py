@@ -15,8 +15,6 @@ constraintRight = constraintLeft * 2
 while cap.isOpened():
     ret, frame = cap.read()
 
-    #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
     frame = cv2.line(frame, (constraintLeft, 0), (constraintLeft, HEIGHT), (255,255,255), 1)
     frame = cv2.line(frame, (constraintRight, 0), (constraintRight, HEIGHT), (255,255,255), 1)
 
