@@ -36,7 +36,7 @@ while cap.isOpened():
             faceClosest["wh"] = (w,h)
 
     # If faces do exist
-    if faces != ():
+    if len(faces) > 0:
         # Draw red (signal for priority face) rectangle for priority target face
         frame = cv2.rectangle(frame, faceClosest["xy"], faceClosest["xy2"], (0,0,255), 1) 
 
