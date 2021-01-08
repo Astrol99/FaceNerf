@@ -1,18 +1,13 @@
 from cv2 import cv2
 import controller
 
-WIDTH = 640
-HEIGHT = 480
-
-constraintLeft = (WIDTH // 3) 
-constraintRight = constraintLeft * 2
-
 faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-cap = cv2.VideoCapture(0)
-# Better FPS and processing
-cap.set(3, WIDTH)
-cap.set(4, HEIGHT)
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cap.set(cv2.CAP_PROP_FPS, 60)
+
+constraintLeft = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) // 3
+constraintRight = constraintLeft * 2
 
 while cap.isOpened():
     ret, frame = cap.read()
