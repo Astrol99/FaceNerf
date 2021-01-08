@@ -6,18 +6,21 @@ faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 cap.set(cv2.CAP_PROP_FPS, 60)
 
-constraintLeft = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) // 3
+HEIGHT = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+WIDTH = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+
+constraintLeft = WIDTH // 3
 constraintRight = constraintLeft * 2
 
 while cap.isOpened():
     ret, frame = cap.read()
 
-    frame = cv2.line(frame, (constraintLeft, 0), (constraintLeft, 480), (255,255,255), 1)
-    frame = cv2.line(frame, (constraintRight, 0), (constraintRight, 480), (255,255,255), 1)
+    #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    frameGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    frame = cv2.line(frame, (constraintLeft, 0), (constraintLeft, HEIGHT), (255,255,255), 1)
+    frame = cv2.line(frame, (constraintRight, 0), (constraintRight, HEIGHT), (255,255,255), 1)
 
-    faces = faceCascade.detectMultiScale(frameGray, 1.3, 5)
+    faces = faceCascade.detectMultiScale(frame, 1.3, 5)
     faceClosest = { "area": 0 }
 
     for (x, y, w, h) in faces:
@@ -45,8 +48,6 @@ while cap.isOpened():
         # Draw center of target face
         frame = cv2.line(frame, (centerX, centerY), (centerX, centerY), (0,0,255), 2)
 
-        #print(controller.horizontal_servo.value)
-
         # Detect if face is within constraints 
         if centerX < constraintLeft:
             controller.left()
@@ -55,7 +56,7 @@ while cap.isOpened():
         else:
             controller.fire()
         
-    cv2.imshow('Video Capture', frame)
+    cv2.imshow('FaceNerf', frame)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
