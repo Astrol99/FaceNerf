@@ -1,10 +1,8 @@
-import cv2
-import interface
+from cv2 import cv2
+import controller
 
 WIDTH = 640
 HEIGHT = 480
-
-FIRED = False   # Only one nerf bullet lol
 
 constraintLeft = (WIDTH // 3) 
 constraintRight = constraintLeft * 2
@@ -52,16 +50,15 @@ while cap.isOpened():
         # Draw center of target face
         frame = cv2.line(frame, (centerX, centerY), (centerX, centerY), (0,0,255), 2)
 
-        # TODO: Fix Serial Lag after couple seconds of use
+        #print(controller.horizontal_servo.value)
+
         # Detect if face is within constraints 
         if centerX < constraintLeft:
-            interface.left()
+            controller.left()
         elif centerX > constraintRight:
-            interface.right()
+            controller.right()
         else:
-            if FIRED != True:
-                interface.fire()
-                FIRED = True
+            controller.fire()
         
     cv2.imshow('Video Capture', frame)
 
